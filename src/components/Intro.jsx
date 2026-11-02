@@ -14,28 +14,37 @@ const Box = styled(motion.div)`
   display: flex;
 
   background: linear-gradient(
-        to right,
-        ${(props) => props.theme.body} 50%,
-        ${(props) => props.theme.text} 50%
-      )
-      bottom,
+      to right,
+      ${(props) => props.theme.body} 50%,
+      ${(props) => props.theme.text} 50%
+    )
+    bottom,
     linear-gradient(
-        to right,
-        ${(props) => props.theme.body} 50%,
-        ${(props) => props.theme.text} 50%
-      )
-      top;
+      to right,
+      ${(props) => props.theme.body} 50%,
+      ${(props) => props.theme.text} 50%
+    )
+    top;
+
   background-repeat: no-repeat;
   background-size: 100% 2px;
+
   border-left: 2px solid ${(props) => props.theme.body};
   border-right: 2px solid ${(props) => props.theme.text};
 
   z-index: 1;
+
+  @media (max-width: 768px) {
+    width: 85vw;
+    height: 40vh;
+  }
 `;
+
 const SubBox = styled.div`
   width: 50%;
   position: relative;
   display: flex;
+  align-items: center;
 
   .pic {
     position: absolute;
@@ -48,19 +57,38 @@ const SubBox = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: calc(1em + 1.5vw);
+  font-size: calc(1em + 1.2vw);
   color: ${(props) => props.theme.body};
   padding: 2rem;
-  cursor: pointer;
 
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 
+  h1 {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 1.3em;
+  }
+
+  h6 {
+    font-size: 0.65em;
+  }
+
   & > *:last-child {
     color: ${(props) => `rgba(${props.theme.bodyRgba},0.6)`};
-    font-size: calc(0.5rem + 1.5vw);
+    font-size: calc(0.5rem + 1vw);
     font-weight: 300;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.7rem;
+
+    h3 {
+      font-size: 0.9em;
+    }
   }
 `;
 
@@ -74,17 +102,22 @@ const Intro = () => {
       <SubBox>
         <Text>
           <h1>Hi,</h1>
+
           <h3>I'm Akkash Dharsaun</h3>
-          <h6>Full Stack & React.js Developer.</h6>
+
+          <h6>Full Stack Developer</h6>
+
+          <h6>React.js | Node.js | Python</h6>
         </Text>
       </SubBox>
+
       <SubBox>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2 }}
         >
-          <img className="pic" src={Me} alt="Profile Pic" />
+          <img className="pic" src={Me} alt="Akkash Dharsaun" />
         </motion.div>
       </SubBox>
     </Box>

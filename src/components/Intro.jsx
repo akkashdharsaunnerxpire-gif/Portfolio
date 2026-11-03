@@ -3,9 +3,6 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import Me from "../assets/Images/profile-img.png";
 
-const RESUME_URL =
-  "https://drive.google.com/uc?export=download&id=1a6Smkfry8fRIR1_pQgklPQ8IRxAcVWfn";
-
 const Box = styled(motion.div)`
   position: absolute;
   left: 50%;
@@ -163,8 +160,8 @@ const Intro = () => {
           <h6 className="skills">React.js | Node.js | Python</h6>
 
           <ResumeBtn
-            href="/Akkash_Dharsaun_Resume.pdf"
-            download="Akkash_Dharsaun_Resume.pdf"
+            href="/AkkashDharsaunATSResume.pdf"
+            download="AkkashDharsaunATSResume.pdf"
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
           >

@@ -4,21 +4,16 @@ import { DarkTheme } from "../components/Themes";
 
 const Logo = styled.h1`
   display: inline-block;
-
   color: ${(props) =>
-    props.color === "dark"
-      ? DarkTheme.text
-      : DarkTheme.body};
-
+    props.$mode === "dark" ? DarkTheme.text : DarkTheme.body};
   font-family: "Pacifico", cursive;
 
   position: fixed;
   left: 2rem;
   top: 2rem;
-
   z-index: 3;
-
   font-size: 2rem;
+  transition: color 0.5s ease;
 
   @media (max-width: 600px) {
     font-size: 1.5rem;
@@ -26,7 +21,7 @@ const Logo = styled.h1`
 `;
 
 const LogoComponent = (props) => {
-  return <Logo color={props.theme}>AD.</Logo>;
+  return <Logo $mode={props.theme}>AD.</Logo>;
 };
 
 export default LogoComponent;

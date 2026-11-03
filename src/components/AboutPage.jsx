@@ -1,4 +1,6 @@
 import React from "react";
+import styled, { ThemeProvider, keyframes } from "styled-components";
+import { motion } from "framer-motion";
 import { DarkTheme } from "./Themes";
 
 import LogoComponent from "../subComponents/LogoComponent";
@@ -7,7 +9,6 @@ import PowerButton from "../subComponents/PowerButton";
 import ParticleComponent from "../subComponents/ParticleComponent";
 import BigTitle from "../subComponents/BigTitlte";
 import astronaut from "../assets/Images/spaceman.png";
-import styled, { ThemeProvider, keyframes } from "styled-components";
 
 const Box = styled.div`
   background-color: ${(props) => props.theme.body};
@@ -17,7 +18,15 @@ const Box = styled.div`
   overflow: hidden;
   padding: 130px 7% 70px;
 
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3rem;
+
   @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
     padding: 110px 6% 50px;
     overflow-y: auto;
   }
@@ -25,37 +34,41 @@ const Box = styled.div`
 
 const float = keyframes`
   0% { transform: translateY(-10px); }
-  50% { transform: translateY(15px) translateX(15px); }
+  50% { transform: translateY(15px) translateX(8px); }
   100% { transform: translateY(-10px); }
 `;
 
 const Spaceman = styled.div`
-  position: absolute;
-  top: 10%;
-  right: 5%;
-  width: 18vw;
-  max-width: 230px;
-  animation: ${float} 4s ease infinite;
+  position: relative;
+  width: 16vw;
+  max-width: 220px;
+  margin-top: 3rem;
+  flex-shrink: 0;
+  animation: ${float} 4s ease-in-out infinite;
+  will-change: transform;
   z-index: 1;
 
   img {
     width: 100%;
     height: auto;
+    display: block;
   }
 
   @media (max-width: 768px) {
     width: 100px;
-    top: 80px;
-    right: 5%;
-    opacity: 0.5;
+    margin-top: 0;
+    opacity: 0.6;
+    align-self: flex-end;
+    order: -1;
   }
 `;
 
-const Main = styled.div`
+const Main = styled(motion.div)`
   border: 2px solid ${(props) => props.theme.text};
   color: ${(props) => props.theme.text};
   padding: 2.5rem;
-  width: min(720px, 70%);
+  width: 100%;
+  max-width: 720px;
   min-height: 450px;
   z-index: 3;
   line-height: 1.7;
@@ -66,6 +79,7 @@ const Main = styled.div`
   background: rgba(255, 255, 255, 0.025);
 
   h2 {
+    display: block;
     font-size: 1.7rem;
     margin-bottom: 1rem;
   }
@@ -80,7 +94,6 @@ const Main = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 100%;
     padding: 1.5rem;
     font-size: 0.9rem;
     min-height: auto;
@@ -96,11 +109,11 @@ const AboutPage = () => {
         <PowerButton />
         <ParticleComponent theme="dark" />
 
-        <Spaceman>
-          <img src={astronaut} alt="Astronaut illustration" />
-        </Spaceman>
-
-        <Main>
+        <Main
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
           <h2>About Me</h2>
 
           I'm <strong>Akkash Dharsaun</strong>, a Full Stack Developer
@@ -111,7 +124,7 @@ const AboutPage = () => {
 
           I completed my Bachelor of Engineering in Computer Science
           and Engineering from Bethlehem Institute of Engineering
-          with a CGPA of <strong>7.89 / 10</strong>.
+          with a CGPA of <strong>7.75 / 10</strong>.
 
           <br />
           <br />
@@ -147,6 +160,10 @@ const AboutPage = () => {
             innovative software projects.
           </div>
         </Main>
+
+        <Spaceman>
+          <img src={astronaut} alt="Astronaut illustration" />
+        </Spaceman>
 
         <BigTitle text="ABOUT" top="5%" left="5%" />
       </Box>

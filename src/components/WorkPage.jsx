@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { DarkTheme } from "./Themes";
 import { motion } from "framer-motion";
@@ -14,8 +14,7 @@ import BigTitlte from "../subComponents/BigTitlte";
 
 const Box = styled.div`
   background-color: ${(props) => props.theme.body};
-
-  height: 400vh;
+  height: ${(props) => props.$height}px;
   position: relative;
   display: flex;
   align-items: center;
@@ -27,9 +26,15 @@ const Main = styled(motion.ul)`
   left: calc(10rem + 15vw);
   height: 40vh;
   display: flex;
-
   color: white;
+  will-change: transform;
+
+  @media (max-width: 768px) {
+    left: 2rem;
+    top: 9rem;
+  }
 `;
+
 const Rotate = styled.span`
   display: block;
   position: fixed;
@@ -38,16 +43,15 @@ const Rotate = styled.span`
   width: 80px;
   height: 80px;
   z-index: 1;
+  will-change: transform;
 `;
 
-// Framer-motion Configuration
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-
     transition: {
-      staggerChildren: 0.5,
+      staggerChildren: 0.4,
       duration: 0.5,
     },
   },
@@ -56,26 +60,47 @@ const container = {
 const WorkPage = () => {
   const ref = useRef(null);
   const yinyang = useRef(null);
+  const [boxHeight, setBoxHeight] = useState(window.innerHeight * 4);
+
+  // Scroll height = viewport + horizontal distance the cards must travel
+  useEffect(() => {
+    const calcHeight = () => {
+      if (!ref.current) return;
+      const left = ref.current.offsetLeft;
+      const contentWidth = ref.current.scrollWidth;
+      const distance = Math.max(left + contentWidth - window.innerWidth + 80, 0);
+      setBoxHeight(window.innerHeight + distance);
+    };
+
+    calcHeight();
+    window.addEventListener("resize", calcHeight);
+    return () => window.removeEventListener("resize", calcHeight);
+  }, []);
 
   useEffect(() => {
-    let element = ref.current;
+    let ticking = false;
 
-    const rotate = () => {
-      element.style.transform = `translateX(${-window.pageYOffset}px)`;
-
-      return (yinyang.current.style.transform =
-        "rotate(" + -window.pageYOffset + "deg)");
+    const update = () => {
+      const y = window.scrollY;
+      if (ref.current) ref.current.style.transform = `translateX(${-y}px)`;
+      if (yinyang.current) yinyang.current.style.transform = `rotate(${-y}deg)`;
+      ticking = false;
     };
 
-    window.addEventListener("scroll", rotate);
-    return () => {
-      window.removeEventListener("scroll", rotate);
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
     };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <ThemeProvider theme={DarkTheme}>
-      <Box>
+      <Box $height={boxHeight}>
         <LogoComponent theme="dark" />
         <SocialIcons theme="dark" />
         <PowerButton />
@@ -85,6 +110,7 @@ const WorkPage = () => {
             <Card key={d.id} data={d} />
           ))}
         </Main>
+
         <Rotate ref={yinyang}>
           <YinYang width={80} height={80} fill={DarkTheme.text} />
         </Rotate>

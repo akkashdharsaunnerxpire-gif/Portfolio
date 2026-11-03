@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
+import { motion } from "framer-motion";
 
 import { lightTheme } from "./Themes";
 import { Design, Develope } from "./AllSvgs";
@@ -18,23 +19,27 @@ const Box = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 3rem;
-  padding: 100px 5% 70px;
+  padding: 120px 5% 80px;
 
   @media (max-width: 900px) {
     flex-direction: column;
+    align-items: center;
     gap: 2rem;
+    padding: 110px 5% 60px;
   }
 `;
 
-const Main = styled.div`
+const Main = styled(motion.div)`
   border: 2px solid ${(props) => props.theme.text};
   color: ${(props) => props.theme.text};
   background-color: ${(props) => props.theme.body};
 
   padding: 1.5rem;
-  width: 38vw;
+  width: 100%;
+  max-width: 560px;
+  flex: 1;
   min-height: 480px;
 
   z-index: 3;
@@ -43,9 +48,12 @@ const Main = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.5rem;
 
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 
   &:hover {
     color: ${(props) => props.theme.body};
@@ -53,7 +61,8 @@ const Main = styled.div`
   }
 
   @media (max-width: 900px) {
-    width: 85%;
+    max-width: 100%;
+    flex: none;
     min-height: auto;
   }
 `;
@@ -64,6 +73,11 @@ const Title = styled.h2`
   align-items: center;
   gap: 1rem;
   font-size: calc(1em + 1vw);
+  margin-bottom: 0.5rem;
+
+  & > * {
+    transition: fill 0.3s ease;
+  }
 
   ${Main}:hover & > * {
     fill: ${(props) => props.theme.body};
@@ -74,6 +88,7 @@ const Description = styled.div`
   color: ${(props) => props.theme.text};
   font-size: 1rem;
   padding: 0.5rem 0;
+  transition: color 0.3s ease;
 
   ${Main}:hover & {
     color: ${(props) => props.theme.body};
@@ -92,6 +107,11 @@ const Description = styled.div`
   li {
     margin-bottom: 0.4rem;
   }
+
+  p {
+    margin: 0;
+    line-height: 1.8;
+  }
 `;
 
 const MySkillsPage = () => {
@@ -103,15 +123,19 @@ const MySkillsPage = () => {
         <PowerButton />
         <ParticleComponent theme="light" />
 
-        <Main>
+        <Main
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
           <Title>
             <Design width={40} height={40} />
             Frontend Development
           </Title>
 
           <Description>
-            I build responsive, interactive and user-friendly
-            web interfaces with modern frontend technologies.
+            I build responsive, interactive and user-friendly web interfaces
+            with modern frontend technologies.
           </Description>
 
           <Description>
@@ -134,18 +158,31 @@ const MySkillsPage = () => {
               <li>API Integration</li>
             </ul>
           </Description>
+
+          <Description>
+            <strong>Cloud, Hosting & Services</strong>
+            <ul>
+              <li>Render (Hosting and Deployment)</li>
+              <li>MongoDB Atlas (Cloud Database)</li>
+              <li>Cloudinary (Image and Media Upload)</li>
+              <li>Twilio (SMS and OTP Verification)</li>
+            </ul>
+          </Description>
         </Main>
 
-        <Main>
+        <Main
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.45 }}
+        >
           <Title>
             <Develope width={40} height={40} />
             Backend Development
           </Title>
 
           <Description>
-            I develop backend applications, REST APIs and
-            database-driven systems with a focus on functionality
-            and maintainable code.
+            I develop backend applications, REST APIs and database-driven
+            systems with a focus on functionality and maintainable code.
           </Description>
 
           <Description>
@@ -160,11 +197,12 @@ const MySkillsPage = () => {
           </Description>
 
           <Description>
-            <strong>Databases</strong>
+            <strong>Databases & Caching</strong>
             <ul>
               <li>MongoDB</li>
               <li>MySQL</li>
               <li>PostgreSQL</li>
+              <li>Redis (Caching)</li>
             </ul>
           </Description>
 
@@ -172,10 +210,18 @@ const MySkillsPage = () => {
             <strong>Tools & Other Skills</strong>
             <ul>
               <li>Git and GitHub</li>
+              <li>Postman (API Testing)</li>
               <li>Java</li>
               <li>Debugging and Software Testing</li>
               <li>Database Design</li>
             </ul>
+          </Description>
+
+          <Description>
+            <strong>AI Tools</strong>
+            <p>
+              Claude, ChatGPT, DeepSeek, Copilot, Grok, Cursor, Bolt
+            </p>
           </Description>
         </Main>
 
